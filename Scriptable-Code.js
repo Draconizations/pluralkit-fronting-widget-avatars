@@ -197,7 +197,7 @@ function createWidget(list, color, textcolor) {
   for (var i = 0; i < l; i++) {
     let s = w.addStack();
 
-    if (useAvatar) {
+    if (useAvatar && imglist.length > 0) {
       let img = s.addImage(imglist[i]);
       img.cornerRadius = 2;
       img.imageSize = imgSize;
