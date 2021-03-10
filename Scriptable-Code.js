@@ -1,8 +1,8 @@
 // ORIGINAL CODE BY VRISKA OF THE COLLECTIVE (ramblingArachnid#8781)
-// AVATAR ADDITION BY PALS (PALS#1612)
+// AVATAR AND TIMESTAMP ADDITION BY PALS (PALS#1612)
 
 //PLEASE INPUT YOUR SYSTEM ID BELOW, SURROUNDED BY DOUBLE QUOTES
-const systemID = "bnynr";
+const systemID = "";
 
 //INCLUDE TOKEN BELOW (found by running pk;token) IF YOUR SYSTEM FRONT INFORMATION IS PRIVATE
 //MAKE SURE IT IS SURROUNDED BY DOUBLE QUOTES
@@ -20,11 +20,15 @@ const useFirstFronterColorAsBackgroundColor = false;
 // set false to disable avatars
 const useAvatar = true;
 
+// Use timestamps
+// if set to true it will calculate and show the amount of time between the switch was set and now.
+const useTimestamp = true;
+
 // WIDGET CUTOFF: only edit if necessary
 // changes the amount of members visible on the widget before a "more..." gets added. to prevent overflow
 // the small cutoff works for small and medium widgets, the large cutoff for the large widget
-const smallWidgetCutoff = 3;
-const largeWidgetCutoff = 10;
+const smallWidgetCutoff = 2;
+const largeWidgetCutoff = 9;
 
 // FONT SIZES: only edit if necessary
 const headerFontSize = 18;
@@ -75,6 +79,7 @@ if (moreFontName != "") {
   moreFont = new Font(moreFontName, moreFontSize);
 }
 
+var time = "";
 list = [];
 imglist = [];
 
@@ -103,6 +108,39 @@ if (error == "") {
 
 if (error == "") {
   const res = await req.loadJSON();
+  
+  if (useTimestamp == true) {
+  
+  // find the difference between the current time and the time of the switch in seconds
+    var now = new Date();
+    var timestamp = new Date(res.timestamp);
+    var diff = Math.abs(now - timestamp)/1000
+  
+  // convert the difference in seconds to days, hours, minutes and seconds
+    var days = Math.floor(diff / 86400);
+    diff -= days * 86400;
+    
+    var hours = Math.floor(diff / 3600);
+    diff -= hours * 3600;
+    
+    var minutes = Math.floor(diff / 60);
+    diff -= minutes * 60;
+    
+    var seconds = Math.floor(diff % 60);
+    
+  // build a string displaying the days, hours, minutes and seconds in the same way pluralkit displays them
+    time = time + minutes + "m"
+    if (hours > 0) {
+      time = hours + "h " + time
+    }
+    if (days > 0) {
+      time = days + "d " + time
+    }
+    if (hours < 1 && days < 1) {
+      time = time + " " + seconds + "s"
+    }
+    time = "For " + time
+  }
 
   //set widget color to current fronter's color if wanted
   //widget text to either white or black to maintain contrast
@@ -189,7 +227,16 @@ function createWidget(list, color, textcolor) {
   let titleTxt = w.addText(heading);
   titleTxt.textColor = textcolor;
   titleTxt.font = headerFont;
-  titleTxt.textOpacity = 0.6;
+  if (useFirstFronterColorAsBackgroundColor == false) titleTxt.textOpacity = 0.6;
+  
+  //display timestamp
+  if (timestamp != "") {
+    let t = w.addStack();
+    let timeTxt = t.addText(time)
+    timeTxt.textColor = textcolor;
+    timeTxt.font = listFont;
+    if (useFirstFronterColorAsBackgroundColor == false) timeTxt.textOpacity = 0.4
+  }
 
   w.addSpacer(7);
 
