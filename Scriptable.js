@@ -1,6 +1,9 @@
 // ORIGINAL CODE BY VRISKA OF THE COLLECTIVE (ramblingArachnid#8781)
 // AVATAR, TIMESTAMP AND SIDEBAR ADDITION BY PALS (Fulmine#1917)
 
+//INPUT SYSTEM ID BELOW, SURROUNDED BY DOUBLE QUOTES
+const systemID = ""
+
 //INCLUDE TOKEN BELOW (found by running pk;token) IF YOUR SYSTEM FRONT INFORMATION IS PRIVATE
 //MAKE SURE IT IS SURROUNDED BY DOUBLE QUOTES
 const token = "yourtoken";
@@ -89,7 +92,7 @@ list = [];
 imglist = [];
 colorlist = [];
 
-const url = `https://api.pluralkit.me/v2/systems/@me/fronters`;
+const url = `https://api.pluralkit.me/v2/systems/${systemID}/fronters`;
 
 const req = new Request(url);
 req.headers = { Authorization: token };
