@@ -20,6 +20,10 @@ const useFirstFronterColorAsBackgroundColor = false;
 // set false to disable avatars
 const useAvatar = true;
 
+// Use Proxy Avatars
+// set true if you would like to use proxy avatars instead of regular avatars
+const useProxyAvatars = true;
+
 // TIMESTAMPS
 // if set to true it show the amount of time between the switch and now.
 const useTimestamp = true;
@@ -175,7 +179,11 @@ if (error == "") {
     }
 
     if (useAvatar) {
-      if (res.members[i].avatar_url) {
+      if (useProxyAvatars && res.members[i].webhook_avatar_url) {
+        let image = new Request(res.members[i].webhook_avatar_url);
+        let img = await image.loadImage();
+        imglist.push(img);
+      } else if (res.members[i].avatar_url) {
         let image = new Request(res.members[i].avatar_url);
         let img = await image.loadImage();
         imglist.push(img);
