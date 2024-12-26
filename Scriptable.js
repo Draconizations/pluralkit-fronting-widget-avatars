@@ -37,7 +37,7 @@ const blockedGradient = false;
 // WIDGET CUTOFF: only edit if necessary
 // changes the amount of members visible on the widget before a "more..." gets added. to prevent overflow
 // the small cutoff works for small and medium widgets, the large cutoff for the large widget
-const smallWidgetCutoff = 3;
+const smallWidgetCutoff = 4;
 const largeWidgetCutoff = 10;
 
 // FONT SIZES: only edit if necessary
@@ -99,7 +99,7 @@ colorlist = [];
 const url = `https://api.pluralkit.me/v2/systems/${systemID}/fronters`;
 
 const req = new Request(url);
-req.headers = { Authorization: token };
+if (token) req.headers = { Authorization: token };
 
 let res = await req.loadJSON();
 
@@ -223,8 +223,9 @@ if (error == "") {
   }
 }
 
+const isLarge = config.widgetFamily == "large"
 // check if the amount of fronters is larger than the cutoff for the used widget
-if (config.widgetFamily == "large") {
+if (isLarge) {
   if (list.length < largeWidgetCutoff) {
     l = list.length;
   } else {
@@ -269,7 +270,7 @@ function createWidget(list, color, textcolor) {
   a.addSpacer();
   
   c.layoutVertically();
-  c.setPadding(8, 12, 2, 7);
+  c.setPadding(isLarge ? 8 : 6, 12, 2, 7);
   c.backgroundColor = color;
 
   //display heading  
@@ -279,7 +280,7 @@ function createWidget(list, color, textcolor) {
   if (useFirstFronterColorAsBackgroundColor == false) titleTxt.textOpacity = 0.6;
   
   //display timestamp
-  if (timestamp != "") {
+  if (time != "") {
     let timeTxt = c.addText(time)
     timeTxt.textColor = textcolor;
     timeTxt.font = listFont;
