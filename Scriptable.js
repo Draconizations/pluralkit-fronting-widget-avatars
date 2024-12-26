@@ -308,7 +308,7 @@ function createWidget(list, color, textcolor) {
   // add a "more" if the amount of fronters is larger than the cutoff for the used widget
   if (l < list.length) {
     let st = c.addStack();
-    let moreTxt = st.addText("More...");
+    let moreTxt = st.addText("And " + (list.length - l) + " others");
     moreTxt.textColor = textcolor;
     moreTxt.textOpacity = 0.6;
     moreTxt.font = moreFont;
